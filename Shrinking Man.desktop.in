@@ -1,0 +1,15 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=%APP_NAME% Diet Tracker
+Name[de]=%APP_NAME% Diät-Tracker
+GenericName=Diet Tracker
+GenericName[de]=Diät-Daten Verwaltung
+Comment=Track your weight and the calories consumed
+Comment[de]=Gewicht und verbrauchte Kalorien beobachten
+Exec=%INSTALL_BIN%%APP_SYSNAME% %U
+StartupNotify=true
+Terminal=false
+Icon=shrinkingman.png
+Type=Application
+Categories=Application;GNOME;GTK;
+MimeType=text/xml;

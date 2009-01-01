@@ -8,19 +8,41 @@ sys.path.append("src/")
 import config as cfg
 
 
+desktopfile = cfg.APP_NAME + ".desktop"
+
 inst = {}
-inst["pixmaps/*"]     = cfg.INSTALL_PIXMAP
-inst["src/*.py"]      = cfg.INSTALL_LIB
-inst["shriman.glade"] = cfg.INSTALL_SHARE
+inst["pixmaps/person.png"] = cfg.INSTALL_PIXMAP
+inst["pixmaps/icon32.png"] = cfg.INSTALL_ICON + "32x32/apps/shrinkingman.png"
+inst["pixmaps/icon48.png"] = cfg.INSTALL_ICON + "48x48/apps/shrinkingman.png"
+inst["shriman.glade"]      = cfg.INSTALL_SHARE
+inst[desktopfile]          = cfg.INSTALL_MENU_XDG
+inst["src/*.py"]           = cfg.INSTALL_LIB
 
 def install_file(name, dir):
     print "Copying file", name, "to", dir
     shutil.copy(file, dir)
 
+
+def gen_desktop_file(name):
+    infile  = file(name + ".in")
+    content = infile.read(20000)
+    content = content.replace("%APP_NAME%",    cfg.APP_NAME)
+    content = content.replace("%APP_SYSNAME%", cfg.APP_SYSNAME)
+    content = content.replace("%INSTALL_BIN%", cfg.INSTALL_BIN)
+    outfile = file(name, "w")
+    outfile.write(content)
+
+
+##########################################
+# Start
+##########################################
+gen_desktop_file(cfg.APP_NAME + ".desktop")
+
 for pattern in inst:
-    if not os.path.isdir(inst[pattern]):
-        print "Creating directory", inst[pattern]
-        os.makedirs(inst[pattern])
+    dirname = os.path.dirname(inst[pattern])
+    if not os.path.isdir(dirname):
+        print "Creating directory", dirname
+        os.makedirs(dirname)
     files = glob.glob(pattern)
     for file in files:
       if not file.endswith("CVS"):
