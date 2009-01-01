@@ -308,7 +308,9 @@ class MainWindow:
         self.treeview_selection.handler_unblock(self.treeview_selection_hd)
     
     def on_spinbutton_weight_value_changed(self, widget):
-        date = self.get_selected_day()
+        day    = self.get_selected_day()
+        weight = round(self.spinbutton_weight.get_value(), 2)
+        day.set_weight(weight)
         #FIXME: We should implement a timer to do this.
         self.save_days() 
 
