@@ -25,7 +25,7 @@ class Food:
         self.name     = name
         self.time     = datetime.datetime.now(tz.LocalTimezone())
         self.quantity = 1
-        self.energy   = 100
+        self.energy   = 100     # That's calories.
     
     def get_name(self):
         return self.name
@@ -42,7 +42,7 @@ class Food:
 
     def get_quantity(self):
         return self.quantity
-
+    
     def set_energy(self, energy):
         if energy < 0: energy = 0
         self.energy = int(energy)
