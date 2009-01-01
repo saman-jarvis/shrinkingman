@@ -73,6 +73,7 @@ class MainWindow:
         self.hour         = self.xml.get_widget('spinbutton_hour')
         self.minute       = self.xml.get_widget('spinbutton_minute')
         self.buttonbox    = self.xml.get_widget('notebook_buttonbox')
+        self.label_sum    = self.xml.get_widget('label_energy_sum')
         self.aboutdialog  = None
         
         t = time.localtime(time.time())
@@ -145,6 +146,14 @@ class MainWindow:
         self.minute.set_value(food.time.minute)
         self.lock_signals = False
     
+    def update_energy_sum(self, day):
+        # Update the sum of calories.
+        sum = 0
+        for food in day.get_foods():
+            sum = sum + (food.energy * food.quantity)
+        text = _("Calories consumed today: %i") % sum
+        self.label_sum.set_text(text)
+
     def get_calendar_date(self):
         year, month, day = self.calendar.get_date()
         # This sucks: GtkCalendar returns a zero-based month.
@@ -253,6 +262,7 @@ class MainWindow:
         self.update_food_in_form(None)
         self.selection.handler_unblock(self.selecthd)
         self.days_save()
+        self.update_energy_sum(day)
 
         # Add the foodname into the autocompletion.
         self.foods.setdefault(food.name, food)
@@ -264,6 +274,7 @@ class MainWindow:
         food = model.get_value(iter, 0)
         day  = self.get_selected_day()
         day.remove_food(food)
+        self.update_energy_sum(day)
         self.model.remove(iter)
         self.days_save()
         self.update_food_in_form(None)
@@ -322,6 +333,7 @@ class MainWindow:
         day.add_food(food)
         day.remove_food(oldfood)
         self.update_food_in_treeview(iter, food)
+        self.update_energy_sum(day)
         #FIXME: We should implement a timer to do this.
         self.days_save()
         self.lock_signals = False
@@ -334,10 +346,12 @@ class MainWindow:
         if not self.days.has_key(date.ctime()): return
         weight = self.days[date.ctime()].get_weight()
         self.weight.set_value(weight)
-
-        for food in self.days[date.ctime()].get_foods():
+        
+        day = self.days[date.ctime()]
+        for food in day.get_foods():
             iter = self.model.append()
             self.update_food_in_treeview(iter, food)
+        self.update_energy_sum(day)
     
     def on_menu_file_new_activate(self, widget):
         fc = filechooser.create_filechooser_save()
