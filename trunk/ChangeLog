@@ -1,4 +1,5 @@
 2005-09- 0.2-1 Samuel Abels <spam debain org>
+	* Automatically load the last opened file on startup.
 	* Changed column order.
 	* Made the "Quantity" spin button entry allow float numbers.
 	* Added a .desktop file.

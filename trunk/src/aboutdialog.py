@@ -16,8 +16,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
 from   gettext import gettext as _
+from   config  import c as cfg
 import gtk
-import config as cfg
 import util
 
 LOGO = "person.png"
@@ -25,7 +25,7 @@ LOGO = "person.png"
 class AboutDialog:
     def __init__(self):
         self.about = gtk.AboutDialog()
-        self.about.set_version(cfg.APP_VERSION)
+        self.about.set_version(cfg["APP_VERSION"])
         self.about.set_copyright(_("Copyright 2005 by Samuel Abels"))
         self.about.set_license(_("Licensed under the General Public License (GPL), Version 2.0"));
         self.about.set_website("http://debain.org/software/shrinkingman/")

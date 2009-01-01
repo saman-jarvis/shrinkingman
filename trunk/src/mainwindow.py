@@ -25,7 +25,7 @@ import time
 import datetime
 import util
 import tz
-import config           as     cfg
+from   config           import c as cfg
 from   food             import Food
 from   day              import Day
 from   aboutdialog      import AboutDialog
@@ -36,10 +36,9 @@ from   xml.sax          import make_parser
 from   xml.sax.handler  import feature_namespaces
 
 
-XML_GLADEFILE           = "shriman.glade"
 XML_DATADIR             = os.environ.get("HOME", os.getcwd()) + "/"
 XML_DATAFILE            = XML_DATADIR + ".defaultdb.shriman"
-GC_KEY_LAST_OPENED_FILE = "/apps/" + cfg.APP_SYSNAME + "/last_opened_file"
+GC_KEY_LAST_OPENED_FILE = "/apps/" + cfg["APP_SYSNAME"] + "/last_opened_file"
 
 
 class MainWindow:
@@ -56,7 +55,7 @@ class MainWindow:
                 and os.path.isfile(last_opened_file)):
                 self.datafile = last_opened_file
 
-        self.xml          = util.get_glade_xml(XML_GLADEFILE)
+        self.xml          = util.get_glade_xml(cfg["APP_SYSNAME"] + ".glade")
         self.window       = self.xml.get_widget('mainwindow')
         self.treeview     = self.xml.get_widget('treeview_caleditor')
         self.calendar     = self.xml.get_widget('calendar')
@@ -164,7 +163,7 @@ class MainWindow:
         
     def update_title(self):
         file = os.path.basename(self.datafile)
-        self.window.set_title("Shrinking Man - " + file)
+        self.window.set_title(file)
         
     def days_clear(self):
         self.model.clear()

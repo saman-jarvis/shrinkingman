@@ -20,11 +20,11 @@ import sys
 import string
 import gtk
 import gtk.glade
-import config as cfg
+from   config import c as cfg
 
 
 def get_pixbuf(basename):
-    file = cfg.INSTALL_PIXMAP + basename
+    file = cfg["INSTALL_PIXMAP"] + basename
     if not os.path.isfile(file):
         file = os.path.dirname(sys.argv[0]) + "/../pixmaps/" + basename
     pixbuf = None
@@ -35,7 +35,7 @@ def get_pixbuf(basename):
     return pixbuf
 
 def get_glade_xml(basename):
-    file = cfg.INSTALL_SHARE + basename
+    file = cfg["INSTALL_SHARE"] + basename
     if not os.path.isfile(file):
         file = os.path.dirname(sys.argv[0]) + "/../" + basename
     xml = None

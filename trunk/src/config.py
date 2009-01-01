@@ -1,13 +1,26 @@
-APP_VERSION         = "0.1"
-APP_NAME            = "Shrinking Man"
-APP_SYSNAME         = "shrinkingman"
-APP_SHORT_SYSNAME   = "shriman"
-GETTEXT_PACKAGE     = APP_SYSNAME
-INSTALL_PREFIX      = "/usr/local/"
-INSTALL_BIN         = INSTALL_PREFIX + "bin/"
-INSTALL_LIB         = INSTALL_PREFIX + "lib/"           + APP_SHORT_SYSNAME + "/"
-INSTALL_SHARE       = INSTALL_PREFIX + "share/"         + APP_SHORT_SYSNAME + "/"
-INSTALL_PIXMAP      = INSTALL_PREFIX + "share/pixmaps/" + APP_SHORT_SYSNAME + "/"
-INSTALL_ICON        = INSTALL_PREFIX + "share/icons/hicolor/"
-INSTALL_LOCALE      = INSTALL_PREFIX + "share/locale/"
-INSTALL_MENU_XDG    = "/usr/share/applications/"
+c = {}
+
+# Application config.
+c["APP_VERSION"]     = "0.2"
+c["APP_NAME"]        = "Shrinking Man"
+c["APP_SYSNAME"]     = "shrinkingman"
+c["GETTEXT_PACKAGE"] = c["APP_SYSNAME"]
+
+# File installation config - prefixes.
+c["INSTALL_PREFIX"]     = "/usr/local/"
+c["INSTALL_LIB_PFX"]    = c["INSTALL_PREFIX"] + "lib/"
+c["INSTALL_SHARE_PFX"]  = c["INSTALL_PREFIX"] + "share/"
+c["INSTALL_PIXMAP_PFX"] = c["INSTALL_PREFIX"] + "pixmaps/"
+
+# Concrete installation directories.
+c["INSTALL_BIN"]      = c["INSTALL_PREFIX"]     + "bin/"
+c["INSTALL_LIB"]      = c["INSTALL_LIB_PFX"]    + c["APP_SYSNAME"] + "/"
+c["INSTALL_SHARE"]    = c["INSTALL_SHARE_PFX"]  + c["APP_SYSNAME"] + "/"
+c["INSTALL_PIXMAP"]   = c["INSTALL_PIXMAP_PFX"] + c["APP_SYSNAME"] + "/"
+c["INSTALL_ICON"]     = c["INSTALL_SHARE_PFX"]  + "icons/hicolor/"
+c["INSTALL_LOCALE"]   = c["INSTALL_SHARE_PFX"]  + "locale/"
+c["INSTALL_MIME"]     = "/usr/share/mime-info/"
+c["INSTALL_MENU_XDG"] = "/usr/share/applications/"
+
+# Concrete files.
+c["INSTALL_BIN_FILE"]  = c["INSTALL_BIN"] + c["APP_SYSNAME"]

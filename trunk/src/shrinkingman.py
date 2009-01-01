@@ -19,21 +19,21 @@
 import sys, os, gettext, locale
 import gnome
 import gtk.glade
-import config     as cfg
+from   config     import c as cfg
 from   mainwindow import MainWindow
 
 if __name__ == '__main__':
     # Locale and I18N stuff
     os.environ['LC_NUMERIC'] = 'C'
     locale.setlocale        (locale.LC_NUMERIC, 'C')
-    gettext.bindtextdomain  (cfg.GETTEXT_PACKAGE, cfg.INSTALL_LOCALE)
-    gettext.textdomain      (cfg.GETTEXT_PACKAGE)
-    gtk.glade.bindtextdomain(cfg.GETTEXT_PACKAGE, cfg.INSTALL_LOCALE)
+    gettext.bindtextdomain  (cfg["GETTEXT_PACKAGE"], cfg["INSTALL_LOCALE"])
+    gettext.textdomain      (cfg["GETTEXT_PACKAGE"])
+    gtk.glade.bindtextdomain(cfg["GETTEXT_PACKAGE"], cfg["INSTALL_LOCALE"])
     try:
-        gtk.glade.textdomain(cfg.GETTEXT_PACKAGE)
+        gtk.glade.textdomain(cfg["GETTEXT_PACKAGE"])
     except AttributeError:
         print "gtk.glade.textdomain not found; i18n will not work"
 
-    gnome.init(cfg.APP_NAME, cfg.APP_VERSION)
+    gnome.init(cfg["APP_NAME"], cfg["APP_VERSION"])
     window = MainWindow()
     gtk.main()
