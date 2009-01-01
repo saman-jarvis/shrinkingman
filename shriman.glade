@@ -692,12 +692,12 @@
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="climb_rate">1</property>
-		      <property name="digits">0</property>
+		      <property name="digits">1</property>
 		      <property name="numeric">False</property>
 		      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 		      <property name="snap_to_ticks">False</property>
 		      <property name="wrap">False</property>
-		      <property name="adjustment">1 0 100 1 10 10</property>
+		      <property name="adjustment">1 0 100 0.10000000149 1 1</property>
 		      <signal name="value_changed" handler="on_spinbutton_quantity_value_changed" last_modification_time="Fri, 02 Sep 2005 16:31:06 GMT"/>
 		    </widget>
 		    <packing>
