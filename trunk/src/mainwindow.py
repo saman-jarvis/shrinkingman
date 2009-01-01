@@ -257,7 +257,7 @@ class MainWindow:
         date = self.get_calendar_date()
         if not self.days.has_key(date.ctime()): return
         weight = self.days[date.ctime()].get_weight()
-        self.weight.set_text(str(weight))
+        self.weight.set_value(weight)
 
         for food in self.days[date.ctime()].get_foods():
             iter = self.model.append()
