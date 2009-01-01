@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-%APP_SYSNAME%">
+    <sub-class-of type="text/xml"/>
+    <comment xml:lang="en">%APP_NAME% Data</comment>
+    <comment xml:lang="de">%APP_NAME% Datei</comment>
+    <glob pattern="*.shriman"/>
+  </mime-type>
+</mime-info>

@@ -143,7 +143,8 @@ class MainWindow:
         else:
             day = Day(date)
             self.days[date.ctime()] = day
-        day.set_weight(self.weight.get_value())
+        weight = round(self.weight.get_value(), 2)
+        day.set_weight(weight)
         return day
         
     def get_food_from_form(self):

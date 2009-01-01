@@ -25,7 +25,7 @@ class Day:
         return self.date
 
     def set_weight(self, weight):
-        self.weight = int(weight)
+        self.weight = float(weight)
         
     def get_weight(self):
         return self.weight

@@ -29,6 +29,7 @@ def remove_dir(name):
 
 
 def gen_file(name):
+    print "Generating", name, "..."
     infile  = file(name + ".in")
     content = infile.read(20000)
     for key in cfg:
@@ -50,11 +51,21 @@ iconname                   = cfg["APP_SYSNAME"] + ".png"
 inst["pixmaps/icon32.png"] = cfg["INSTALL_ICON"] + "32x32/apps/" + iconname
 inst["pixmaps/icon48.png"] = cfg["INSTALL_ICON"] + "48x48/apps/" + iconname
 
+# Mime type definition file.
+mime_xml_file       = cfg["APP_SYSNAME"] + ".xml"
+inst[mime_xml_file] = cfg["INSTALL_MIME_XML"]
+gen_file(mime_xml_file)
+
 # Mime .keys file name and installation location.
-mime_key_file       = cfg["APP_SYSNAME"] + ".keys"
-inst[mime_key_file] = cfg["INSTALL_MIME"]
-cfg["MIME_ICON"]    = inst["pixmaps/icon48.png"] # Hack for mime.keys file
-gen_file(mime_key_file)
+#mime_key_file       = cfg["APP_SYSNAME"] + ".keys"
+#inst[mime_key_file] = cfg["INSTALL_MIME_KEYS"]
+#cfg["MIME_ICON"]    = inst["pixmaps/icon48.png"] # Hack for mime.keys file
+#gen_file(mime_key_file)
+
+# Mime .mime file name and installation location.
+#mime_mime_file       = cfg["APP_SYSNAME"] + ".mime"
+#inst[mime_mime_file] = cfg["INSTALL_MIME_KEYS"]
+#gen_file(mime_mime_file)
 
 # Pixmap file installation locations.
 inst["pixmaps/person.png"] = cfg["INSTALL_PIXMAP"]
@@ -100,6 +111,9 @@ os.chmod(binfile, stat.S_IRWXU
 
 print "Creating application symlink..."
 os.symlink(binfile, cfg["INSTALL_BIN_FILE"])
+
+print "Running MIME database update..."
+os.system("update-mime-database " + cfg["INSTALL_MIME_PFX"])
 
 print "Compiling the application..."
 os.chdir(cfg["INSTALL_LIB"])
