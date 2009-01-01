@@ -383,7 +383,39 @@
 	  <property name="n_columns">2</property>
 	  <property name="homogeneous">False</property>
 	  <property name="row_spacing">0</property>
-	  <property name="column_spacing">6</property>
+	  <property name="column_spacing">12</property>
+
+	  <child>
+	    <widget class="GtkScrolledWindow" id="scrolledwindow1">
+	      <property name="visible">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="shadow_type">GTK_SHADOW_IN</property>
+	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+	      <child>
+		<widget class="GtkTreeView" id="treeview_caleditor">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="headers_visible">True</property>
+		  <property name="rules_hint">True</property>
+		  <property name="reorderable">False</property>
+		  <property name="enable_search">True</property>
+		  <property name="fixed_height_mode">False</property>
+		  <property name="hover_selection">False</property>
+		  <property name="hover_expand">False</property>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="left_attach">1</property>
+	      <property name="right_attach">2</property>
+	      <property name="top_attach">0</property>
+	      <property name="bottom_attach">1</property>
+	      <property name="y_options">fill</property>
+	    </packing>
+	  </child>
 
 	  <child>
 	    <widget class="GtkTable" id="table2">
@@ -438,7 +470,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label_kilo">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">kilo</property>
+		      <property name="label" translatable="yes">kgs</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -492,7 +524,7 @@
 		      <property name="selectable">False</property>
 		      <property name="xalign">0</property>
 		      <property name="yalign">0.5</property>
-		      <property name="xpad">6</property>
+		      <property name="xpad">0</property>
 		      <property name="ypad">6</property>
 		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 		      <property name="width_chars">-1</property>
@@ -520,7 +552,7 @@
 		      <property name="selectable">False</property>
 		      <property name="xalign">0</property>
 		      <property name="yalign">0.5</property>
-		      <property name="xpad">6</property>
+		      <property name="xpad">0</property>
 		      <property name="ypad">6</property>
 		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 		      <property name="width_chars">-1</property>
@@ -1045,7 +1077,7 @@
 				      <child>
 					<widget class="GtkLabel" id="label9">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">New Form</property>
+					  <property name="label" translatable="yes">New Entry</property>
 					  <property name="use_underline">True</property>
 					  <property name="use_markup">False</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1119,7 +1151,7 @@
 
 		  <child>
 		    <widget class="GtkFixed" id="fixed10">
-		      <property name="width_request">12</property>
+		      <property name="width_request">6</property>
 		      <property name="visible">True</property>
 		    </widget>
 		    <packing>
@@ -1141,42 +1173,11 @@
 	      </child>
 	    </widget>
 	    <packing>
-	      <property name="left_attach">1</property>
-	      <property name="right_attach">2</property>
-	      <property name="top_attach">0</property>
-	      <property name="bottom_attach">1</property>
-	      <property name="x_options">fill</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkScrolledWindow" id="scrolledwindow1">
-	      <property name="visible">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-	      <property name="shadow_type">GTK_SHADOW_IN</property>
-	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
-
-	      <child>
-		<widget class="GtkTreeView" id="treeview_caleditor">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="headers_visible">True</property>
-		  <property name="rules_hint">False</property>
-		  <property name="reorderable">False</property>
-		  <property name="enable_search">True</property>
-		  <property name="fixed_height_mode">False</property>
-		  <property name="hover_selection">False</property>
-		  <property name="hover_expand">False</property>
-		</widget>
-	      </child>
-	    </widget>
-	    <packing>
 	      <property name="left_attach">0</property>
 	      <property name="right_attach">1</property>
 	      <property name="top_attach">0</property>
 	      <property name="bottom_attach">1</property>
+	      <property name="x_options">fill</property>
 	      <property name="y_options">fill</property>
 	    </packing>
 	  </child>
@@ -1465,13 +1466,15 @@ Female</property>
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="button1">
+	    <widget class="GtkButton" id="button_close">
+	      <property name="height_request">36</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-close</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
+	      <signal name="pressed" handler="on_button_close_pressed" last_modification_time="Mon, 12 Sep 2005 20:01:07 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>

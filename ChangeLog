@@ -1,4 +1,10 @@
 2005-09- 0.2-1 Samuel Abels <spam debain org>
+	* Made the listview resizable, set rulers hint and made the food column
+	  expand.
+	* Reversed the panel order in the mainwindow (the calendar is now on the
+	  left).
+	* Removed the date from the listview, because it was redunant.
+	* Improved terminology.
 	* Made the "Weight" spin button entry box allow float numbers.
 	* Fix: Improved the installer and the build no longer fails.
 	* Fix: Substitute german language strings for English.
