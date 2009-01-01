@@ -67,7 +67,7 @@ class ConsumerDB(saxutils.DefaultHandler):
             self.cur_day.add_food(self.cur_food)
             
         elif name == "weight":
-            self.cur_day.set_weight(atoi(self.cur_val))
+            self.cur_day.set_weight(atof(self.cur_val))
             
         elif name == "quantity":
             self.cur_food.quantity = atof(self.cur_val)

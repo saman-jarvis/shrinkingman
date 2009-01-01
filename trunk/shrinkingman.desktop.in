@@ -12,4 +12,4 @@ Terminal=false
 Icon=shrinkingman.png
 Type=Application
 Categories=Application;GNOME;GTK;
-MimeType=text/xml;
+MimeType=application/x-%APP_SYSNAME%;
