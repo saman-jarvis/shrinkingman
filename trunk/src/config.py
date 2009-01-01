@@ -26,4 +26,4 @@ c["INSTALL_MENU_XDG"]   = "/usr/share/applications/"
 
 # Concrete files.
 c["INSTALL_BIN_FILE"]     = c["INSTALL_BIN"]   + c["APP_SYSNAME"]
-c["INSTALL_NUTRITION_DB"] = c["INSTALL_SHARE"] + c["APP_SYSNAME"] + "nut.db"
+c["INSTALL_NUTRITION_DB"] = c["INSTALL_SHARE"] + "nutrition.db"

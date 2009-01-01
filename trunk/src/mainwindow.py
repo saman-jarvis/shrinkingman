@@ -32,7 +32,6 @@ from   aboutdialog      import AboutDialog
 import filechooser
 from   consumerdb       import ConsumerDB
 from   consumerdb       import ConsumerDBGenerator
-from   stringcompletion import StringCompletion
 from   xml.sax          import make_parser
 from   xml.sax.handler  import feature_namespaces
 
@@ -452,6 +451,9 @@ class MainWindow:
             self.dialog_about = AboutDialog()
         self.dialog_about.show()
 
+    ################################################################
+    # Toolbutton callbacks.
+    ################################################################
     def on_toolbutton_new_clicked(self, widget):
         self.on_menu_file_new_activate(widget)
 
