@@ -5,43 +5,86 @@ import stat
 import glob
 import shutil
 sys.path.append("src/")
-import config as cfg
-
-
-desktopfile = cfg.APP_NAME + ".desktop"
-
+from   config import c as cfg
 inst = {}
-inst["pixmaps/person.png"] = cfg.INSTALL_PIXMAP
-inst["pixmaps/icon32.png"] = cfg.INSTALL_ICON + "32x32/apps/shrinkingman.png"
-inst["pixmaps/icon48.png"] = cfg.INSTALL_ICON + "48x48/apps/shrinkingman.png"
-inst["shriman.glade"]      = cfg.INSTALL_SHARE
-inst[desktopfile]          = cfg.INSTALL_MENU_XDG
-inst["src/*.py"]           = cfg.INSTALL_LIB
 
+
+##########################################
+# Helper functions
+##########################################
 def install_file(name, dir):
-    print "Copying file", name, "to", dir
+    print "Copying file", name, "to", dir, "..."
     shutil.copy(file, dir)
 
 
-def gen_desktop_file(name):
+def remove_dir(name):
+    if os.path.isdir(name):
+        print "Removing", name, "..."
+        files = glob.glob(name + "*.py*")
+        files = files + glob.glob(name + "*.glade")
+        files = files + glob.glob(name + "*.png")
+        for file in files:
+            os.remove(file)
+        os.rmdir(name)
+
+
+def gen_file(name):
     infile  = file(name + ".in")
     content = infile.read(20000)
-    content = content.replace("%APP_NAME%",    cfg.APP_NAME)
-    content = content.replace("%APP_SYSNAME%", cfg.APP_SYSNAME)
-    content = content.replace("%INSTALL_BIN%", cfg.INSTALL_BIN)
+    for key in cfg:
+        content = content.replace("%" + key + "%", cfg[key])
     outfile = file(name, "w")
     outfile.write(content)
 
 
 ##########################################
-# Start
+# Config
 ##########################################
-gen_desktop_file(cfg.APP_NAME + ".desktop")
+# Desktop file name and installation location.
+desktopfile       = cfg["APP_SYSNAME"] + ".desktop"
+inst[desktopfile] = cfg["INSTALL_MENU_XDG"]
+gen_file(desktopfile)
 
+# Icon file names and installation locations.
+iconname                   = cfg["APP_SYSNAME"] + ".png"
+inst["pixmaps/icon32.png"] = cfg["INSTALL_ICON"] + "32x32/apps/" + iconname
+inst["pixmaps/icon48.png"] = cfg["INSTALL_ICON"] + "48x48/apps/" + iconname
+
+# Mime .keys file name and installation location.
+mime_key_file       = cfg["APP_SYSNAME"] + ".keys"
+inst[mime_key_file] = cfg["INSTALL_MIME"]
+cfg["MIME_ICON"]    = inst["pixmaps/icon48.png"] # Hack for mime.keys file
+gen_file(mime_key_file)
+
+# Pixmap file installation locations.
+inst["pixmaps/person.png"] = cfg["INSTALL_PIXMAP"]
+
+# Date file installation locations.
+gladefile       = cfg["APP_SYSNAME"] + ".glade"
+inst[gladefile] = cfg["INSTALL_SHARE"]
+
+# Library files.
+inst["src/*.py"] = cfg["INSTALL_LIB"]
+
+
+##########################################
+# Cleanup older installations.
+##########################################
+print "Cleaning up older installations..."
+remove_dir(cfg["INSTALL_LIB_PFX"]   + "shriman/")
+remove_dir(cfg["INSTALL_SHARE_PFX"] + "shriman/")
+if os.path.isfile(cfg["INSTALL_BIN_FILE"]):
+    os.remove(cfg["INSTALL_BIN_FILE"])
+
+
+##########################################
+# Start.
+##########################################
+print "Installing new version..."
 for pattern in inst:
     dirname = os.path.dirname(inst[pattern])
     if not os.path.isdir(dirname):
-        print "Creating directory", dirname
+        print "Creating directory", dirname, "..."
         os.makedirs(dirname)
     files = glob.glob(pattern)
     for file in files:
@@ -49,21 +92,19 @@ for pattern in inst:
         install_file(file, inst[pattern])
 
 
-binfile = cfg.INSTALL_LIB + cfg.APP_SHORT_SYSNAME + ".py"
-
-print "Changing permissions."
-# That's permission 755
+print "Changing permission of the root script to 755..."
+binfile = cfg["INSTALL_LIB"] + cfg["APP_SYSNAME"] + ".py"
 os.chmod(binfile, stat.S_IRWXU
                 | stat.S_IRGRP | stat.S_IXGRP
                 | stat.S_IROTH | stat.S_IXOTH)
 
-print "Creating application symlink."
-os.remove(cfg.INSTALL_BIN + cfg.APP_SYSNAME)
-os.symlink(binfile, cfg.INSTALL_BIN + cfg.APP_SYSNAME)
+print "Creating application symlink..."
+os.symlink(binfile, cfg["INSTALL_BIN_FILE"])
 
 print "Compiling the application..."
-sys.path.append(cfg.INSTALL_LIB)
-import shriman     # Causes compilation of the program
+os.chdir(cfg["INSTALL_LIB"])
+sys.path.append(cfg["INSTALL_LIB"])
+import shrinkingman     # Causes compilation of the program
 
 print "Installation successfully completed!"
-print "To start", cfg.APP_NAME + ", type", cfg.APP_SYSNAME
+print "To start", cfg["APP_NAME"] + ", type", cfg["APP_SYSNAME"]
