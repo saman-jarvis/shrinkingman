@@ -1,0 +1,21 @@
+       Shrinking Man Installation Instructions
+------------------------------------------------------
+ 1. If you want to override the default installation
+    location (/usr/local/), edit src/config.py
+    according to your likes.
+
+ 2. Run the following command in the root directory
+    of this package:
+    
+      sudo ./install.py
+      
+    This should work on Systems such as Ubuntu
+    Linux. On other Linux distributions, try this
+    instead:
+    
+      su -c "./install.py"
+
+ 3. Finished. To run the application, type this
+    command:
+
+      shrinkingman

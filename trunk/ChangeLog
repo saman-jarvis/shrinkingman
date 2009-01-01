@@ -1,0 +1,7 @@
+2005-09- 0.2-1 Samuel Abels <spam debain org>
+	* Added navigation toolbuttons for the calendar.
+	* Fix: 1-month-offset
+	* Fix: Incorrect CLI error message when adding new food.
+	* Fix: Remember weight even if no food was consumed that day.
+2005-09-11 0.1-1 Samuel Abels <spam debain org>
+	* Initial Release
