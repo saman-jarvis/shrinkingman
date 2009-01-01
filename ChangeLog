@@ -1,4 +1,5 @@
 2005-09- 0.2.1-1 Samuel Abels <spam debain org>
+	* Inherit the default weight from the previous day.
 	* Fix: Make the window scale properly.
 	* The sum of calories of the current day is now shown.
 2005-09-14 0.2.0-1 Samuel Abels <spam debain org>

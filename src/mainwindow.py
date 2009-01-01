@@ -168,15 +168,25 @@ class MainWindow:
         self.calendar.select_day(date.day)
         
     def get_selected_day(self):
-        date = self.get_calendar_date()
-        if self.days.has_key(date.ctime()):
-            day = self.days[date.ctime()]
-        else:
-            day = Day(date)
-            self.days[date.ctime()] = day
+        # Return the day if it already exists.
+        today_date = self.get_calendar_date()
+        today      = self.days.setdefault(today_date.ctime(), Day(today_date))
+        if today.get_weight() > 0:
+            return today
+
+        # If it was newly instantiated (get_weight == 0), inherit yesterday's
+        # weight.
+        offset         = datetime.timedelta(1)
+        yesterday_date = today_date - offset
+        yesterday      = self.days.get(yesterday_date.ctime())
+        if yesterday:
+            today.set_weight(yesterday.get_weight())
+            return today
+
+        # If yesterday did not exist, get the default value from the form.
         weight = round(self.weight.get_value(), 2)
-        day.set_weight(weight)
-        return day
+        today.set_weight(weight)
+        return today
         
     def get_food_from_form(self):
         foodname = self.food.get_text()
@@ -341,17 +351,14 @@ class MainWindow:
     def on_calendar_day_selected(self, widget):
         self.model.clear()
         self.buttonbox.set_current_page(0)
-        self.weight.set_text("40")
-        date = self.get_calendar_date()
-        if not self.days.has_key(date.ctime()): return
-        weight = self.days[date.ctime()].get_weight()
-        self.weight.set_value(weight)
+        today = self.get_selected_day()
+        self.weight.set_value(today.get_weight())
+        if not today: return
         
-        day = self.days[date.ctime()]
-        for food in day.get_foods():
+        for food in today.get_foods():
             iter = self.model.append()
             self.update_food_in_treeview(iter, food)
-        self.update_energy_sum(day)
+        self.update_energy_sum(today)
     
     def on_menu_file_new_activate(self, widget):
         fc = filechooser.create_filechooser_save()
