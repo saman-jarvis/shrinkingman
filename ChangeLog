@@ -1,4 +1,5 @@
 2005-09- 0.2-1 Samuel Abels <spam debain org>
+	* Added a .desktop file.
 	* Implemented cut & paste operations and added "Edit" menu.
 	* Added navigation toolbuttons for the calendar.
 	* Fix: 1-month-offset
