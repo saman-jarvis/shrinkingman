@@ -26,7 +26,6 @@ import xml.utils.iso8601
 import os
 import datetime
 import tz
-import unittest
 from string import atoi
 from string import atof
 
@@ -122,37 +121,39 @@ class ConsumerDBGenerator:
 
 XML_FILE = "consumerdbtest.xml"
 
-class ConsumerDBTest(unittest.TestCase):
-    def setUp(self):
-        self.parser = make_parser()
-        self.parser.setFeature(feature_namespaces, 0)
-
-    def runTest(self):
-        # Generate an XML file first.
-        days = {}
-        for f in range(20):
-            curtime = datetime.datetime(2005, 6, f + 1, 0, 0, 0, 0, tz.LocalTimezone())
-            day = Day(curtime)
-            day.set_weight(100)
-            for i in range(20):
-                food = Food("Testfood " + str(i))
-                food.quantity = 10 + i
-                food.energy   = 100 * i
-                food.time     = curtime
-                day.add_food(food)
-            days[curtime.ctime()] = day
-        gen = ConsumerDBGenerator();
-        gen.generate(XML_FILE, days)
-        
-        # Now read.
-        db = ConsumerDB()
-        self.parser.setContentHandler(db)
-        self.parser.parse(XML_FILE)
-        assert len(db.getDays()) == 20
-        
-        os.remove(XML_FILE)
-
 if __name__ == '__main__':
+    import unittest
+
+    class ConsumerDBTest(unittest.TestCase):
+        def setUp(self):
+            self.parser = make_parser()
+            self.parser.setFeature(feature_namespaces, 0)
+
+        def runTest(self):
+            # Generate an XML file first.
+            days = {}
+            for f in range(20):
+                curtime = datetime.datetime(2005, 6, f + 1, 0, 0, 0, 0, tz.LocalTimezone())
+                day = Day(curtime)
+                day.set_weight(100)
+                for i in range(20):
+                    food = Food("Testfood " + str(i))
+                    food.quantity = 10 + i
+                    food.energy   = 100 * i
+                    food.time     = curtime
+                    day.add_food(food)
+                days[curtime.ctime()] = day
+            gen = ConsumerDBGenerator();
+            gen.generate(XML_FILE, days)
+            
+            # Now read.
+            db = ConsumerDB()
+            self.parser.setContentHandler(db)
+            self.parser.parse(XML_FILE)
+            assert len(db.getDays()) == 20
+            
+            os.remove(XML_FILE)
+
     testcase = ConsumerDBTest()
     runner   = unittest.TextTestRunner()
     runner.run(testcase)
