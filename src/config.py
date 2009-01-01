@@ -1,7 +1,7 @@
 c = {}
 
 # Application config.
-c["APP_VERSION"]     = "0.2"
+c["APP_VERSION"]     = "0.2.1"
 c["APP_NAME"]        = "Shrinking Man"
 c["APP_SYSNAME"]     = "shrinkingman"
 c["GETTEXT_PACKAGE"] = c["APP_SYSNAME"]

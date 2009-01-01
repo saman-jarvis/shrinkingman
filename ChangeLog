@@ -1,9 +1,13 @@
-2005-09- 0.2-1 Samuel Abels <spam debain org>
+2005-09- 0.2.1-1 Samuel Abels <spam debain org>
+	* Fix: Make the window scale properly.
+	* The sum of calories of the current day is now shown.
+2005-09-14 0.2.0-1 Samuel Abels <spam debain org>
 	* Made the listview resizable, set rulers hint and made the food column
 	  expand.
 	* Reversed the panel order in the mainwindow (the calendar is now on the
 	  left).
-	* Removed the date from the listview, because it was redunant.
+	* Removed the date from the listview, because it was redundant with the
+	  calendar.
 	* Improved terminology.
 	* Made the "Weight" spin button entry box allow float numbers.
 	* Fix: Improved the installer and the build no longer fails.
@@ -17,6 +21,7 @@
 	* Added navigation toolbuttons for the calendar.
 	* Fix: 1-month-offset
 	* Fix: Incorrect CLI error message when adding new food.
+	* Fix: Update treeview when the value in the minute entry was changed.
 	* Fix: Remember weight even if no food was consumed that day.
 2005-09-11 0.1-1 Samuel Abels <spam debain org>
 	* Initial Release

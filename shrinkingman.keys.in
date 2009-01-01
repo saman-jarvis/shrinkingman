@@ -1,4 +1,0 @@
-application/x-%APP_SYSNAME%
-	open=%APP_SYSNAME% %f
-	view=%APP_SYSNAME% %f
-	icon-filename=%MIME_ICON%
