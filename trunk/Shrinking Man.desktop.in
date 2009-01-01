@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=%APP_NAME% Diet Tracker
-Name[de]=%APP_NAME% Di‰t-Tracker
+Name[de]=%APP_NAME% Di√§t-Tracker
 GenericName=Diet Tracker
-GenericName[de]=Di‰t-Daten Verwaltung
+GenericName[de]=Di√§t-Daten Verwaltung
 Comment=Track your weight and the calories consumed
 Comment[de]=Gewicht und verbrauchte Kalorien beobachten
 Exec=%INSTALL_BIN%%APP_SYSNAME% %U
