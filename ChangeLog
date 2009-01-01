@@ -1,6 +1,7 @@
 2005-09- 0.2-1 Samuel Abels <spam debain org>
 	* Made the "Weight" spin button entry box allow float numbers.
-	* Improved installer.
+	* Fix: Improved the installer and the build no longer fails.
+	* Fix: Substitute german language strings for English.
 	* Correctly register application/x-shrinkingman MIME-type.
 	* Automatically load the last opened file on startup.
 	* Changed column order.
