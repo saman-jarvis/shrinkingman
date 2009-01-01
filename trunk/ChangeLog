@@ -1,4 +1,6 @@
 2005-09- 0.2-1 Samuel Abels <spam debain org>
+	* Changed column order.
+	* Made the "Quantity" spin button entry allow float numbers.
 	* Added a .desktop file.
 	* Implemented cut & paste operations and added "Edit" menu.
 	* Added navigation toolbuttons for the calendar.

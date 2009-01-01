@@ -68,7 +68,7 @@ class MainWindow:
                                    gobject.TYPE_STRING)
         
         i = 0
-        for name in (_("Food"), _("Quantity"), _("Calories"), _("Date")):
+        for name in (_("Food"), _("Calories"), _("Quantity"), _("Date")):
             i = i + 1
             renderer = gtk.CellRendererText()
             column   = gtk.TreeViewColumn(name, renderer, text = i)
@@ -92,8 +92,8 @@ class MainWindow:
     def update_food_in_treeview(self, iter, food):
         self.model.set_value(iter, 0, food)
         self.model.set_value(iter, 1, food.name)
-        self.model.set_value(iter, 2, food.quantity)
-        self.model.set_value(iter, 3, food.energy)
+        self.model.set_value(iter, 2, food.energy)
+        self.model.set_value(iter, 3, food.quantity)
         self.model.set_value(iter, 4, food.time.strftime("%x %X"))
         self.model.set_value(iter, 5, food.time.isoformat())
     
@@ -137,13 +137,14 @@ class MainWindow:
     def get_food_from_form(self):
         foodname = self.food.get_text()
         if len(foodname) <= 0: return
-        hour   = int(self.hour.get_value())
-        minute = int(self.minute.get_value())
-        time   = datetime.time(hour, minute, 0, 0, tz.LocalTimezone())
-        date   = self.get_calendar_date()
-        date   = date.combine(date, time)
+        hour     = int(self.hour.get_value())
+        minute   = int(self.minute.get_value())
+        time     = datetime.time(hour, minute, 0, 0, tz.LocalTimezone())
+        date     = self.get_calendar_date()
+        date     = date.combine(date, time)
+        quantity = round(self.quantity.get_value(), 2)
         food = Food(foodname)
-        food.set_quantity(self.quantity.get_value())
+        food.set_quantity(quantity)
         food.set_energy(self.energy.get_value())
         food.set_time(date)
         return food
