@@ -34,13 +34,13 @@ def get_pixbuf(basename):
         print "Error:", file, "not found."
     return pixbuf
 
-def get_glade_xml(basename):
+def get_glade_xml(basename, root = ""):
     file = cfg["INSTALL_SHARE"] + basename
     if not os.path.isfile(file):
         file = os.path.dirname(sys.argv[0]) + "/../" + basename
     xml = None
     try:
-        xml = gtk.glade.XML(file)
+        xml = gtk.glade.XML(file, root)
     except:
         print "Error:", file, "not found."
     return xml

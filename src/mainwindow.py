@@ -55,7 +55,8 @@ class MainWindow:
                 and os.path.isfile(last_opened_file)):
                 self.datafile = last_opened_file
 
-        self.xml          = util.get_glade_xml(cfg["APP_SYSNAME"] + ".glade")
+        self.xml          = util.get_glade_xml(cfg["APP_SYSNAME"] + ".glade",
+                                               "mainwindow")
         self.window       = self.xml.get_widget('mainwindow')
         self.treeview     = self.xml.get_widget('treeview_caleditor')
         self.calendar     = self.xml.get_widget('calendar')
