@@ -18,6 +18,8 @@
 from datetime import *
 import time as _time
 
+ZERO = timedelta(0)
+
 STDOFFSET = timedelta(seconds = -_time.timezone)
 if _time.daylight:
     DSTOFFSET = timedelta(seconds = -_time.altzone)
