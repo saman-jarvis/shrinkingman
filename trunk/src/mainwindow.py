@@ -30,23 +30,29 @@ from   food             import Food
 from   day              import Day
 from   aboutdialog      import AboutDialog
 import filechooser
+from   fooddb           import FoodDB
+from   fooddb           import FoodDBGenerator
 from   consumerdb       import ConsumerDB
 from   consumerdb       import ConsumerDBGenerator
+from   stringcompletion import StringCompletion
 from   xml.sax          import make_parser
 from   xml.sax.handler  import feature_namespaces
 
 
 XML_DATADIR             = os.environ.get("HOME", os.getcwd()) + "/"
-XML_DATAFILE            = XML_DATADIR + ".defaultdb.shriman"
+XML_FILE_FOODDB         = XML_DATADIR + ".shriman.fooddb"
+XML_FILE_CONSUMERDB     = XML_DATADIR + ".defaultdb.shriman"
 GC_KEY_LAST_OPENED_FILE = "/apps/" + cfg["APP_SYSNAME"] + "/last_opened_file"
 
 
 class MainWindow:
     def __init__(self):
         self.days         = {}
+        self.foods        = {}
+        self.foodnames    = StringCompletion()
         self.lock_signals = False
         
-        self.datafile     = XML_DATAFILE
+        self.datafile     = XML_FILE_CONSUMERDB
         self.gc           = gconf.client_get_default()
         gc_val            = self.gc.get(GC_KEY_LAST_OPENED_FILE)
         if gc_val:
@@ -80,16 +86,31 @@ class MainWindow:
                                    gobject.TYPE_STRING,
                                    gobject.TYPE_STRING)
         
-        i = 0
-        for name in (_("Food"), _("Calories"), _("Quantity"), _("Date")):
-            i = i + 1
-            renderer = gtk.CellRendererText()
-            column   = gtk.TreeViewColumn(name, renderer, text = i)
-            if i == 4:
-                column.set_sort_column_id(5)
-            else:
-                column.set_sort_column_id(i)
-            self.treeview.append_column(column)
+        renderer = gtk.CellRendererText()
+        column   = gtk.TreeViewColumn(_("Food"), renderer, text = 1)
+        column.set_sort_column_id(1)
+        column.set_resizable(True)
+        column.set_expand(True)
+        self.treeview.append_column(column)
+
+        renderer = gtk.CellRendererText()
+        column   = gtk.TreeViewColumn(_("Calories"), renderer, text = 2)
+        column.set_sort_column_id(2)
+        column.set_resizable(True)
+        self.treeview.append_column(column)
+
+        renderer = gtk.CellRendererText()
+        column   = gtk.TreeViewColumn(_("Quantity"), renderer, text = 3)
+        column.set_sort_column_id(3)
+        column.set_resizable(True)
+        self.treeview.append_column(column)
+
+        renderer = gtk.CellRendererText()
+        column   = gtk.TreeViewColumn(_("Time"), renderer, text = 4)
+        column.set_sort_column_id(5)
+        column.set_resizable(True)
+        self.treeview.append_column(column)
+
         self.treeview.set_model(self.model)
         self.treeview.set_headers_clickable(True)
         self.treeview.set_rules_hint(True)
@@ -107,7 +128,7 @@ class MainWindow:
         self.model.set_value(iter, 1, food.name)
         self.model.set_value(iter, 2, food.energy)
         self.model.set_value(iter, 3, food.quantity)
-        self.model.set_value(iter, 4, food.time.strftime("%x %X"))
+        self.model.set_value(iter, 4, food.time.strftime("%X"))
         self.model.set_value(iter, 5, food.time.isoformat())
     
     def update_food_in_form(self, food_):
@@ -167,6 +188,19 @@ class MainWindow:
         file = os.path.basename(self.datafile)
         self.window.set_title(file)
         
+    def foods_load(self):
+        self.foods     = {}
+        self.foodnames = StringCompletion()
+        if not os.path.isfile(XML_FILE_FOODDB): return
+        parser = make_parser()
+        db     = ConsumerDB()
+        parser.setFeature(feature_namespaces, 0)
+        parser.setContentHandler(db)
+        parser.parse(XML_FILE_FOODDB)
+        self.foods = db.getFoods()
+        for foodname in foods:
+            self.foodnames.insert(foodname)
+
     def days_clear(self):
         self.model.clear()
         self.days = {}
@@ -190,6 +224,18 @@ class MainWindow:
         self.update_title()
         self.gc.set_string(GC_KEY_LAST_OPENED_FILE, self.datafile)
 
+    def autocomplete_foodname(self):
+        # Try to look up a completion for the food name.
+        cursor   = self.food.get_position()
+        foodname = self.food.get_text()
+        if foodname != "" and cursor == len(foodname) - 1:
+            completion = self.foodnames.find(foodname, False)
+            if completion:
+                self.food.set_text(completion)
+                #print "Region", cursor, len(completion)
+                self.food.select_region(cursor + 1, -1)
+                #self.food.set_position(cursor)
+
     def on_delete_event(*args):
         gtk.main_quit()
     
@@ -197,6 +243,8 @@ class MainWindow:
         self.selection.handler_block(self.selecthd)
         food = self.get_food_from_form()
         if not food: return
+
+        # Attach the food to the current day and update the GUI.
         day  = self.get_selected_day()
         day.add_food(food)
         iter = self.model.append()
@@ -205,6 +253,10 @@ class MainWindow:
         self.update_food_in_form(None)
         self.selection.handler_unblock(self.selecthd)
         self.days_save()
+
+        # Add the foodname into the autocompletion.
+        self.foods.setdefault(food.name, food)
+        self.foodnames.insert(food.name)
     
     def on_button_delete_pressed(self, widget):
         model, iter = self.selection.get_selected()
@@ -253,11 +305,17 @@ class MainWindow:
 
     def on_entry_changed(self, widget):
         if self.lock_signals: return
-        model, iter = self.selection.get_selected()
-        if not iter: return
         foodname = self.food.get_text()
         if len(foodname) <= 0: return
         
+        self.lock_signals = True
+        #self.autocomplete_foodname()
+        model, iter = self.selection.get_selected()
+        self.lock_signals = False
+        if iter <= 0: return
+        
+        # Re-save the data.
+        self.lock_signals = True
         day     = self.get_selected_day()
         oldfood = model.get_value(iter, 0)
         food    = self.get_food_from_form()
@@ -266,6 +324,7 @@ class MainWindow:
         self.update_food_in_treeview(iter, food)
         #FIXME: We should implement a timer to do this.
         self.days_save()
+        self.lock_signals = False
     
     def on_calendar_day_selected(self, widget):
         self.model.clear()
