@@ -303,6 +303,30 @@ class MainWindow:
     def on_menu_file_quit_activate(self, widget):
         gtk.main_quit()
 
+    def on_menu_edit_cut_activate(self, widget):
+        widget = self.window.get_focus()
+        if not hasattr(widget, "cut_clipboard"):
+            return
+        widget.cut_clipboard()
+
+    def on_menu_edit_copy_activate(self, widget):
+        widget = self.window.get_focus()
+        if not hasattr(widget, "copy_clipboard"):
+            return
+        widget.copy_clipboard()
+
+    def on_menu_edit_paste_activate(self, widget):
+        widget = self.window.get_focus()
+        if not hasattr(widget, "paste_clipboard"):
+            return
+        widget.paste_clipboard()
+
+    def on_menu_edit_delete_activate(self, widget):
+        widget = self.window.get_focus()
+        if not hasattr(widget, "delete_selection"):
+            return
+        widget.delete_selection()
+
     def on_menu_view_previous_day_activate(self, widget):
         date   = self.get_calendar_date()
         offset = datetime.timedelta(1)
