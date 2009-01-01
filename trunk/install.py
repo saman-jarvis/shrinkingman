@@ -23,7 +23,8 @@ for pattern in inst:
         os.makedirs(inst[pattern])
     files = glob.glob(pattern)
     for file in files:
-      install_file(file, inst[pattern])
+      if not file.endswith("CVS"):
+        install_file(file, inst[pattern])
 
 
 binfile = cfg.INSTALL_LIB + cfg.APP_SHORT_SYSNAME + ".py"
