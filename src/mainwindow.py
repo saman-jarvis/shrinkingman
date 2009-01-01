@@ -17,6 +17,7 @@
 ##
 from   gettext import gettext as _
 import gnome
+import gconf
 import gobject
 import gtk.glade
 import os
@@ -24,6 +25,7 @@ import time
 import datetime
 import util
 import tz
+import config           as     cfg
 from   food             import Food
 from   day              import Day
 from   aboutdialog      import AboutDialog
@@ -34,8 +36,11 @@ from   xml.sax          import make_parser
 from   xml.sax.handler  import feature_namespaces
 
 
-XML_GLADEFILE = "shriman.glade"
-XML_DATAFILE  = os.environ.get("HOME", os.getcwd()) + "/.defaultdb.shriman"
+XML_GLADEFILE           = "shriman.glade"
+XML_DATADIR             = os.environ.get("HOME", os.getcwd()) + "/"
+XML_DATAFILE            = XML_DATADIR + ".defaultdb.shriman"
+GC_KEY_LAST_OPENED_FILE = "/apps/" + cfg.APP_SYSNAME + "/last_opened_file"
+
 
 class MainWindow:
     def __init__(self):
@@ -43,6 +48,14 @@ class MainWindow:
         self.lock_signals = False
         
         self.datafile     = XML_DATAFILE
+        self.gc           = gconf.client_get_default()
+        gc_val            = self.gc.get(GC_KEY_LAST_OPENED_FILE)
+        if gc_val:
+            last_opened_file = gc_val.get_string()
+            if (last_opened_file
+                and os.path.isfile(last_opened_file)):
+                self.datafile = last_opened_file
+
         self.xml          = util.get_glade_xml(XML_GLADEFILE)
         self.window       = self.xml.get_widget('mainwindow')
         self.treeview     = self.xml.get_widget('treeview_caleditor')
@@ -168,11 +181,13 @@ class MainWindow:
         self.days_clear()
         self.days = db.getDays()
         self.on_calendar_day_selected(self.calendar)
+        self.gc.set_string(GC_KEY_LAST_OPENED_FILE, self.datafile)
         
     def days_save(self):
         gen = ConsumerDBGenerator()
         gen.generate(self.datafile, self.days)
         self.update_title()
+        self.gc.set_string(GC_KEY_LAST_OPENED_FILE, self.datafile)
 
     def on_delete_event(*args):
         gtk.main_quit()
