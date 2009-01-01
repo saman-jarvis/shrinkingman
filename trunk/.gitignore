@@ -1,0 +1,5 @@
+shrinkingman.desktop
+shrinkingman.xml
+*.db
+*.pyc
+*.pyo

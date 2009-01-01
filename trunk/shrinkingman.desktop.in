@@ -11,5 +11,5 @@ StartupNotify=true
 Terminal=false
 Icon=shrinkingman.png
 Type=Application
-Categories=Application;GNOME;GTK;
+Categories=GNOME;GTK;Health;
 MimeType=application/x-%APP_SYSNAME%;
