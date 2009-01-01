@@ -27,7 +27,6 @@ import xml.utils.iso8601
 import os
 import datetime
 import tz
-import unittest
 
 
 class FoodDB(saxutils.DefaultHandler):
@@ -83,30 +82,32 @@ class FoodDBGenerator:
 
 XML_FILE = "fooddbtest.xml"
 
-class FoodDBTest(unittest.TestCase):
-    def setUp(self):
-        self.parser = make_parser()
-        self.parser.setFeature(feature_namespaces, 0)
-
-    def runTest(self):
-        # Generate an XML file first.
-        foods = {}
-        for i in range(20):
-            food = Food("Testfood " + str(i))
-            food.energy   = 100 * i
-            foods[food.name] = food
-        gen = FoodDBGenerator();
-        gen.generate(XML_FILE, foods)
-        
-        # Now read.
-        db = FoodDB()
-        self.parser.setContentHandler(db)
-        self.parser.parse(XML_FILE)
-        assert len(db.getFoods()) == 20
-        
-        os.remove(XML_FILE)
-
 if __name__ == '__main__':
+    import unittest
+
+    class FoodDBTest(unittest.TestCase):
+        def setUp(self):
+            self.parser = make_parser()
+            self.parser.setFeature(feature_namespaces, 0)
+
+        def runTest(self):
+            # Generate an XML file first.
+            foods = {}
+            for i in range(20):
+                food = Food("Testfood " + str(i))
+                food.energy   = 100 * i
+                foods[food.name] = food
+            gen = FoodDBGenerator();
+            gen.generate(XML_FILE, foods)
+            
+            # Now read.
+            db = FoodDB()
+            self.parser.setContentHandler(db)
+            self.parser.parse(XML_FILE)
+            assert len(db.getFoods()) == 20
+            
+            os.remove(XML_FILE)
+
     testcase = FoodDBTest()
     runner   = unittest.TextTestRunner()
     runner.run(testcase)

@@ -18,7 +18,6 @@
 ##
 import datetime
 import tz
-import unittest
 
 class Food:
     def __init__(self, name):
@@ -56,24 +55,24 @@ class Food:
     quantity = property(set_quantity, get_quantity)
     energy   = property(set_energy,   get_energy)
 
-
-class FoodTest(unittest.TestCase):
-    def runTest(self):
-        food = Food("test")
-        assert food.get_name() == "test"
-        
-        time = datetime.datetime(2005, 7, 18)
-        food.set_time(time)
-        assert food.get_time() == time
-
-        food.set_quantity(14)
-        assert food.get_quantity() == 14
-
-        food.set_energy(548)
-        assert food.get_energy() == 548
-
-
 if __name__ == '__main__':
+    import unittest
+
+    class FoodTest(unittest.TestCase):
+        def runTest(self):
+            food = Food("test")
+            assert food.get_name() == "test"
+            
+            time = datetime.datetime(2005, 7, 18)
+            food.set_time(time)
+            assert food.get_time() == time
+
+            food.set_quantity(14)
+            assert food.get_quantity() == 14
+
+            food.set_energy(548)
+            assert food.get_energy() == 548
+
     testcase = FoodTest()
     runner   = unittest.TextTestRunner()
     runner.run(testcase)
