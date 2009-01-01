@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+###
+# NOTE: BEFORE RUNNING THIS SCRIPT the usda.tar.bz2 file must be unpacked!!!
+###
 from pysqlite2 import dbapi2 as sqlite
 import os
 import sys
